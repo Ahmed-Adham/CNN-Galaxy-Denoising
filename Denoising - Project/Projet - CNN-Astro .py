@@ -682,8 +682,8 @@ model_saved = GalaxyNet()[0]
 model_saved.load_state_dict(torch.load('trained_model_20.pt')) #charger le modèle que j'ai entrainé à 20 epochs
 
 
-#chemin = Path + 'Jamais_vues/' +  'Jupiter.png' #  chargement de Jupiter du début
-chemin = Path + 'Jamais_vues/' + 'Nb-Trefle-Bruitee.png' # avec une image qu'il connait
+chemin = Path + 'Jamais_vues/' +  'Jupiter.png' #  chargement de Jupiter du début
+#chemin = Path + 'Jamais_vues/' + 'Nb-Trefle-Bruitee.png' # avec une image qu'il connait
 
 x = cv.imread(chemin,0)
 x = np.array(x) 
@@ -757,9 +757,9 @@ for i in [0,1,2,3]: #Bien corriger le max_shift_x à la valeur max que peut pren
 image_mean = image_mean*255/np.amax(image_mean) # on renormalise 
 
 fig,ax = plt.subplots(1,2)
-ax[0].imshow(x,cmap='Greys') # image floue 
+ax[0].imshow(-x,cmap='Greys') # image floue 
 ax[0].set_title('Originale')
-ax[1].imshow(image_mean,cmap='Greys') # image "reconstruite"
+ax[1].imshow(-image_mean,cmap='Greys') # image "reconstruite"
 ax[1].set_title('Après convolution et "reconstruction"')
 plt.show()
 
