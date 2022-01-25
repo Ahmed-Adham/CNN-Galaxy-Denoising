@@ -682,8 +682,9 @@ model_saved = GalaxyNet()[0]
 model_saved.load_state_dict(torch.load('trained_model_20.pt')) #charger le modèle que j'ai entrainé à 20 epochs
 
 
-chemin = Path + 'Jamais_vues/' +  'Jupiter.png' #  chargement de Jupiter du début
-#chemin = Path + 'Jamais_vues/' + 'Nb-Trefle-Bruitee.png' # avec une image qu'il connait
+#chemin = Path + 'Jamais_vues/' +  'Saturne.png' #  chargement de Saturne
+#chemin = Path + 'Jamais_vues/' +  'Jupiter.png' #  chargement de Jupiter 
+chemin = Path + 'Jamais_vues/' + 'Nb-Trefle-Bruitee.png' # avec une image qu'il ne connait pas
 
 x = cv.imread(chemin,0)
 x = np.array(x) 
