@@ -168,7 +168,7 @@ A l'aide des deux fonctions "charger" et "bruiter" créeons un jeu de données t
 
 Nom_de_la_Galaxie = ('M31.gif','M51.gif','M81.gif','M101.gif','M104.gif','Hoag.gif','Haltere.gif','Lyre.gif','M24.gif','M45.gif','M1.gif') 
 #chargeons pour toutes nos galaxies...
-nombre_de_galaxies = 1; # pour étoffer le jeu de données, j'ai ajouté des images de nébuleuses et amas d'étoiles
+nombre_de_galaxies = 11; # pour étoffer le jeu de données, j'ai ajouté des images de nébuleuses et amas d'étoiles
 
 #on crée une matrice dans laquelle on va mettre nos images vierges sous format np :
 Galaxie_np = np.zeros([nombre_de_galaxies,3571,3564])  # 3571,3564 = taille des images en pixel
@@ -181,7 +181,7 @@ Noisy_galaxy = np.zeros([nombre_de_galaxies,3571-kernel_size+1,3564-kernel_size+
 
 # Chargement des images + bruitage : 
 for i in range(nombre_de_galaxies) : 
-    Galaxie_np[i] = load_Gal_Image(Nom_de_la_Galaxie[i],Path) #on applique la fonction pour charger et couper l'image
+    Galaxie_np[i] = load_Gal_Image(Nom_de_la_Galaxie[i],Path) #on applique la fonction pour charger l'image
     #Galaxie_np[i] = Galaxie_np[i]/np.amax(Galaxie_np[i])     # Normalisons à présent les données de notre tableau entre 0 et 1, 
     #pour pouvoir utiliser les différentes images pour entrainer notre CNN
     Noisy_galaxy[i] = Convolution_Airy(Galaxie_np[i],airydisk_2D_kernel,0.01)  # on applique notre fonction de bruit + blurring
