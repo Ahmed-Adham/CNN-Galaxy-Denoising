@@ -77,7 +77,7 @@ from sklearn.model_selection import train_test_split
 """ 
 A)
     
-Créons une fonction chargeant et coupant l'image d'une galaxies, 
+Créons une fonction chargeant l'image d'une galaxies, 
 """
 def load_Gal_Image ( Nom_de_la_Galaxie, Path):
 
@@ -88,7 +88,7 @@ def load_Gal_Image ( Nom_de_la_Galaxie, Path):
     size = imMXXarray.shape #voyons la taille de l'image
     size
 
-    return imMXXarray #on renvoie l'image coupée en sortie de la fonction
+    return imMXXarray #on renvoie l'image en sortie de la fonction
 
 
 # In[ ]:
@@ -168,7 +168,7 @@ A l'aide des deux fonctions "charger" et "bruiter" créeons un jeu de données t
 
 Nom_de_la_Galaxie = ('M31.gif','M51.gif','M81.gif','M101.gif','M104.gif','Hoag.gif','Haltere.gif','Lyre.gif','M24.gif','M45.gif','M1.gif') 
 #chargeons pour toutes nos galaxies...
-nombre_de_galaxies = 11; # pour étoffer le jeu de données, j'ai ajouté des images de nébuleuses et amas d'étoiles
+nombre_de_galaxies = 1; # pour étoffer le jeu de données, j'ai ajouté des images de nébuleuses et amas d'étoiles
 
 #on crée une matrice dans laquelle on va mettre nos images vierges sous format np :
 Galaxie_np = np.zeros([nombre_de_galaxies,3571,3564])  # 3571,3564 = taille des images en pixel
@@ -189,9 +189,9 @@ for i in range(nombre_de_galaxies) :
 
 # On affiche le résultat pour la galaxie n°2 - M51  ; 
 fig,ax = plt.subplots(1,2)
-ax[0].imshow(Galaxie_np[0],cmap='Greys') # image originale 
+ax[0].imshow(Galaxie_np[1],cmap='Greys') # image originale 
 ax[0].set_title('Source')
-ax[1].imshow(Noisy_galaxy[0],cmap='Greys') # résultat bruité pour la galaxie N°2
+ax[1].imshow(Noisy_galaxy[1],cmap='Greys') # résultat bruité pour la galaxie N°2
 ax[1].set_title('Après convolution')
 plt.show()
 # 
@@ -333,9 +333,9 @@ labelsNorm = labels / np.max(labels)
 
 im_2_plot = random.randint(0,1000); # chiffre au hasard pour choisir une image du jeu de données
 fig,ax = plt.subplots(1,2)
-ax[0].imshow(labels[im_2_plot],cmap='Greys') #plot image d'origine
+ax[0].imshow(-labels[im_2_plot],cmap='Greys') #plot image d'origine
 ax[0].set_title('Originale')
-ax[1].imshow(data[im_2_plot], interpolation='nearest',cmap='Greys') #plot image floutée/bruitée
+ax[1].imshow(-data[im_2_plot], interpolation='nearest',cmap='Greys') #plot image floutée/bruitée
 ax[1].set_title('Floutée')
 plt.show()
 # -> l'objectif sera de constituer l'image normale à partir de la floutée
@@ -345,7 +345,7 @@ plt.show()
 labelsNorm = labelsNorm.reshape(labelsNorm.shape[0],1024) # Labels = données nettes
 
 dataNorm = dataNorm.reshape(dataNorm.shape[0],1,32,32) # Data = données floues
-#reshape des donnes sur 12000 images * 1 canal (gris) * 32 * 32, important pour le CNN
+#reshape des donnes sur 22000 images * 1 canal (gris) * 32 * 32, important pour le CNN
 
 
 
@@ -621,8 +621,8 @@ model_saved.load_state_dict(torch.load('trained_model_20.pt')) #charger le modè
 X,y = iter(train_loader).next()
 
 with torch.no_grad(): # deactivates autograd
-    yHat = net(X) #si on veut visualiser les données du modèle actuel
-    #yHat = model_saved(X) #si on veut visualiser les données d'un modèle enregistré
+    #yHat = net(X) #si on veut visualiser les données du modèle actuel
+    yHat = model_saved(X) #si on veut visualiser les données d'un modèle enregistré
 
 y_np_1 = y.cpu().detach().numpy()
 yHat_np_1 = yHat.cpu().detach().numpy() 
@@ -667,8 +667,8 @@ juste exectuer la cell#6  (pour charger le modèle du CNN)
 et réactualiser la variable du chemin Path
 
 
-Nous allons maintenant charger des images, les couper en morceaux de 32*32px qui seront injectés dans notre net et nous reconstruirons la sortie.
-pour éviter un effet de "petits carrés posés à côté" on va reconstruire l'image plusieurs fois en décallant un peu le ciseau à chaque fois puis en moyennant le tout
+Nous allons maintenant charger des images bruitées, les couper en morceaux de 32*32px qui seront injectés dans notre net et nous reconstruirons la sortie.
+pour éviter un effet de "petits carrés posés à côté" on va reconstruire l'image intégralement plusieurs fois en décallant un peu le ciseau à chaque fois puis en moyennant le tout
 cela sur 4 pixels dans la longueur et 4 pixels en largeur 
 
 Ceci prend quelques minutes, 
@@ -679,7 +679,7 @@ Ceci prend quelques minutes,
 
 # pour faire à partir d'un modèle enregistré 
 model_saved = GalaxyNet()[0]
-model_saved.load_state_dict(torch.load('trained_model_20.pt')) #charger le modèle que j'ai entrainé à 20 epochs
+model_saved.load_state_dict(torch.load('trained_model_20.pt')) # charger le modèle que j'ai entrainé à 20 epochs
 
 
 #chemin = Path + 'Jamais_vues/' +  'Saturne.png' #  chargement de Saturne
